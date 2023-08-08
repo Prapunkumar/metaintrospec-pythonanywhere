@@ -1,0 +1,103 @@
+<!-- index.html -->
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+
+</head>
+<style>
+    body {
+        background-color: #f7f7f7;
+    }
+
+    .form-group label {
+        font-weight: bold;
+    }
+
+    @media (max-width: 576px) {
+        .col-md-6 {
+            /* Make the form take up full width on smaller screens */
+            width: 100%;
+        }
+    }
+</style>
+
+<body>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+
+                <form method="POST" action="index">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="hidden" name="email" value="{{ email }}">
+
+                        <input type="hidden" name="name" value="{{ name }}">
+                        <textarea class="form-control" name="name" rows="1" value="{{ name }}"
+                            disabled>{{ name }}</textarea>
+                    </div>
+
+                    <!-- Load questions -->
+                    <input type="hidden" name="questions" value="{{ questions }}">
+
+                    {% for question in questions %}
+
+                    <div class="form-group">
+                        <label for="answer{{count *5+ loop.index}}">{{ question }}</label>
+                        <textarea class="form-control " id="answer{{count*5+loop.index}}"
+                            name="answer{{count*5+loop.index}}" oninput="checkTotalWordLimit(this, 150)"
+                            onkeydown="checkWordCount(event, this, 150)" rows="6" required
+                            placeholder="No copy Paste allowed. Your answer should be less than 150 words"></textarea>
+
+                    </div>
+
+                    {% endfor %}
+
+                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    const elems = document.querySelectorAll('.nopaste');
+
+    elems.forEach(elem => {
+        elem.addEventListener('paste', (event) => {
+            event.preventDefault();
+        });
+    });
+
+
+    function checkTotalWordLimit(textarea, limit) {
+        const text = textarea.value;
+        const words = text.trim().split(/\s+/);
+
+        if (words.length > limit) {
+            const truncatedText = words.slice(0, limit).join(' ');
+            textarea.value = truncatedText;
+        }
+    }
+
+    function checkWordCount(event, textarea, limit) {
+        const text = textarea.value;
+        const words = text.trim().split(/\s+/);
+
+        if (words.length >= limit && event.keyCode !== 8 && event.keyCode !== 46) {
+            // Cancel the event (typing) if the word limit is reached
+            event.preventDefault();
+        }
+    }
+</script>
+
+
+
+</html>
