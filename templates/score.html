@@ -46,11 +46,16 @@
           <div class="card-body">
             <h5 class="card-title">{{name}}</h5>
 <br/>
-            <h5 class="card-title">Your score</h5>
-            <h4 class="card-text" id="team-a-score">{{score}}</h4>
-            <br/>
-            <h5>Thank you for participating. You will receive an email remainder with link for the next set of questions</h5>
-
+            {% if not error_flag: %}
+                <h5 class="card-title">Your score</h5>
+                <h4 class="card-text" id="team-a-score">{{score}}</h4>
+                <br/>
+                <h5>Thank you for participating! You will receive an email remainder with link for the next set of questions.</h5>
+            {% else %}
+                <h5>You score will be emailed to you shortly.</h5>
+                <br/>
+                <h5>Thank you for participating! You will receive an email remainder with link for the next set of questions.</h5>
+            {% endif %}
           </div>
         </div>
       </div>

@@ -114,23 +114,26 @@ def index():
         print("gpt score",text_from_choices)
 
         # # Split the text based on ", " to separate the key-value pairs
-        items = text_from_choices.strip().split(", ")
-        # print(items)
-        # # Initialize a variable to store the total score
-        total_score = 0
+        error_flag=False
+        try:
+            items = text_from_choices.strip().split(", ")
+            # print(items)
+            # # Initialize a variable to store the total score
+            total_score = 0
 
-        # # Loop through the items and add up the scores
-        for item in items:
-            key, value = item.split(":")
-            score = float(value.strip().replace("%", ""))
-            print(score)
-            total_score += score
-
-        # # Calculate the average score
-        average_score = total_score / len(items)
-
-        # # Output the average score
-        print("Average score:", average_score)
+            # # Loop through the items and add up the scores
+            for item in items:
+                key, value = item.split(":")
+                score = float(value.strip().replace("%", ""))
+                print(score)
+                total_score += score
+             # # Calculate the average score
+            average_score = total_score / len(items)
+            # # Output the average score
+            print("Average score:", average_score)
+        except:
+            print("openAI parsing error")
+            error_flag=True
 
         conn = create_conn()
         cursor = conn.cursor()
@@ -147,7 +150,7 @@ def index():
         conn.close()
 
 
-        return render_template('score.html',score=average_score,name= name)
+        return render_template('score.html',score=average_score,name= name,error_flag=error_flag)
     return render_template('answers.html', questions=questions)
 
 
