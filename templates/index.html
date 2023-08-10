@@ -47,6 +47,9 @@
         box-shadow: 0 0 5px #007bff;
         border-color: #80bdff;
     }
+    textarea::placeholder {
+        white-space: pre-line;
+    }
 
     .card {
         max-width: 600px;
@@ -112,7 +115,8 @@
                             <textarea class="form-control nopaste" id="answer{{count*5+loop.index}}"
                                 name="answer{{count*5+loop.index}}" oninput="checkTotalWordLimit(this, 150)"
                                 onkeydown="checkWordCount(event, this, 150)" rows="8" required
-                                placeholder="This is a long descriptive field to answer. You can write up to 150 words. no copy-paste allowed."></textarea>
+                                placeholder="This is a long descriptive field to answer. 
+                                You can write up to 150 words. no copy-paste allowed."></textarea>
 
                         </div>
 
@@ -172,31 +176,42 @@
     const nextBtn = document.getElementById('next');
 
     nextBtn.addEventListener('click', () => {
+        const answerTextarea = questions[current].querySelector('textarea');
 
+        // Only allow next if answer has text
+        if (answerTextarea.value.trim() === '') {
+            return;
+        }
         // Hide current question
         questions[current].style.display = 'none';
 
         // Increment index
-        current = current + 1 < questions.length ? current + 1 : 0;
+        current++;
 
-        // Show next question
-        questions[current].style.display = 'block';
+        // Check if last question
+        if (current === questions.length) {
+            // Do nothing, stay on last question
 
-    });
-    const prevBtn = document.getElementById('prev');
-
-    prevBtn.addEventListener('click', () => {
-
-        // Hide current question
-        questions[current].style.display = 'none';
-
-        // Decrement index
-        current = current - 1 >= 0 ? current - 1 : questions.length - 1;
-
-        // Show previous question
-        questions[current].style.display = 'block';
+        } else {
+            // Otherwise, show next question
+            questions[current].style.display = 'block';
+        }
 
     });
+    // const prevBtn = document.getElementById('prev');
+
+    // prevBtn.addEventListener('click', () => {
+
+    //     // Hide current question
+    //     questions[current].style.display = 'none';
+
+    //     // Decrement index
+    //     current = current - 1 >= 0 ? current - 1 : questions.length - 1;
+
+    //     // Show previous question
+    //     questions[current].style.display = 'block';
+
+    // });
 
 
 </script>
